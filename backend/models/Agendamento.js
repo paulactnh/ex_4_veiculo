@@ -11,7 +11,7 @@ const Agendamento = db.define('agendamento',{
         allowNull: false
     },
     tipo:{
-        type: DataTypes.ENUM('REVISAO','MANUTENCAO','INSTALAÇAO'),
+        type: DataTypes.ENUM('REVISAO','MANUTENCAO','INSTALACAO'),
         allowNull: false
     },
     idVeiculo:{

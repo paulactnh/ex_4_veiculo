@@ -86,4 +86,78 @@ const buscarPorNome = async(req,res)=>{
     }
 }
 
-module.exports = { cadastrar, listar, buscarPorNome }
+const consultar = async(req,res)=>{
+    const id = req.params.id
+    try {
+        const cliente = await Cliente.findByPk(id)
+        if(!cliente){
+            return res.status(404).json({message: 'Cliente inexistente!!'})
+        }
+
+        const bytes = CryptoJS.AES.decrypt(cliente.cpf, CHAVE_SECRETA)
+        const cpfDecrypt = bytes.toString(CryptoJS.enc.Utf8)
+
+        res.status(200).json({
+            codCliente: cliente.codCliente,
+            nome: cliente.nome,
+            email: cliente.email,
+            cpf: cpfDecrypt,
+            endereco: cliente.endereco,
+            telefone: cliente.telefone
+        })
+    } catch (err) {
+        res.status(500).json({message: 'Erro ao tentar consultar o cliente'})
+        console.error('Erro ao tentar consultar o cliente',err)
+    }
+}
+
+const apagar = async(req,res)=>{
+    const id = req.params.id
+    try {
+        const cliente = await Cliente.findByPk(id)
+        if (!cliente){
+            return res.status(404).json({message: "Cliente inexistente!!"})
+        }
+
+        await Cliente.destroy({where:{codCliente: id}})
+        res.status(200).json({message: "Cliente excluído com sucesso!"})
+    } catch (err) {
+        res.status(500).json({message: 'Erro ao tentar apagar o cliente'})
+        console.error('Erro ao tentar apagar o cliente',err)
+    }
+}
+
+const atualizar = async(req,res)=>{
+    const id = req.params.id
+    const valores = req.body
+
+    if(!valores.nome ||!valores.email || !valores.senha || !valores.cpf || !valores.endereco || !valores.telefone){
+        return res.status(401).json({message: 'Todos os campos são obrigatórios!!'})
+    }
+
+    try {
+        const cliente = await Cliente.findByPk(id)
+        if (!cliente){
+            return res.status(404).json({message: "Cliente inexistente!!"})
+        }
+
+        const senhaCripto = CryptoJS.AES.encrypt(valores.senha, CHAVE_SECRETA).toString()
+        const cpfCripto = CryptoJS.AES.encrypt(valores.cpf, CHAVE_SECRETA).toString()
+
+        await Cliente.update({
+            nome: valores.nome,
+            email: valores.email,
+            senha: senhaCripto,
+            cpf: cpfCripto,
+            endereco: valores.endereco,
+            telefone: valores.telefone
+        },{where:{codCliente: id}})
+
+        res.status(200).json({message: "Cliente atualizado com sucesso!"})
+    } catch (err) {
+        res.status(500).json({message: 'Erro ao tentar atualizar o cliente'})
+        console.error('Erro ao tentar atualizar o cliente',err)
+    }
+}
+
+module.exports = { cadastrar, listar, buscarPorNome, consultar, apagar, atualizar }

@@ -1,0 +1,113 @@
+### teste de cadastro cliente 1
+POST http://localhost:3000/cliente
+Content-Type: application/json
+
+{
+    "nome": "Paula",
+    "email": "paula@gmail.com",
+    "senha": "abc",
+    "cpf": "12345678912",
+    "endereco": "Rua 200",
+    "telefone": "41992223479"
+}
+
+### teste de cadastro cliente 2
+POST http://localhost:3000/cliente
+Content-Type: application/json
+
+{
+    "nome": "Ana",
+    "email": "ana@gmail.com",
+    "senha": "qwe",
+    "cpf": "12345645667",
+    "endereco": "Rua 255",
+    "telefone": "41992452389"
+}
+
+### listar cliente
+GET http://localhost:3000/clientes
+
+### consultar cliente
+GET http://localhost:3000/cliente/1
+
+### buscar cliente por nome 
+GET http://localhost:3000/cliente/buscarNome/Ana
+
+### apagar cliente
+DELETE http://localhost:3000/cliente/2
+
+### atualizar cliente
+PUT http://localhost:3000/cliente/1
+Content-Type: application/json
+
+{
+    "nome": "Paula",
+    "email": "paula@gmail.com",
+    "senha": "123",
+    "cpf": "12345678912",
+    "endereco": "Rua 300",
+    "telefone": "41992223479"
+}
+
+### teste de cadastro veiculo 1
+POST http://localhost:3000/veiculo
+Content-Type: application/json
+
+{
+    "modelo": "A2",
+    "marca": "Audi",
+    "placa": "34A98FF",
+    "codRastreio": "JFOklosjfswen987354982",
+    "idCliente": 1
+}
+
+
+### teste de cadastro veiculo 2
+POST http://localhost:3000/veiculo
+Content-Type: application/json
+
+{
+    "modelo": "520A",
+    "marca": "Ferrari",
+    "placa": "45G78AA",
+    "codRastreio": "ndeq8475LEJFdmjesl",
+    "idCliente": 2
+}
+
+### teste de cadastro agendamento 1
+POST http://localhost:3000/agendamento
+Content-Type: application/json
+
+{
+    "data": "2026-09-01 14:00",
+    "tipo": "REVISAO",
+    "idVeiculo": 1,
+    "idCliente": 1
+}
+
+
+### teste de cadastro agendamento 2
+POST http://localhost:3000/agendamento
+Content-Type: application/json
+
+{
+    "data": "2026-11-31 17:30",
+    "tipo": "MANUTENCAO",
+    "idVeiculo": 2,
+    "idCliente": 2
+}
+
+### listar por data
+GET http://localhost:3000/agendamentos
+
+
+### teste de atualizacao agendamento 2
+PUT  http://localhost:3000/agendamento/2
+Content-Type: application/json
+
+{
+    "data": "2026-01-14 17:30",
+    "tipo": "INSTALACAO",
+    "idVeiculo": 2,
+    "idCliente": 2
+}
